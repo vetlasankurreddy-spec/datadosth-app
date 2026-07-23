@@ -9,10 +9,6 @@ jobs:
         with:
           flutter-version: '3.22.0'
       - run: flutter create. --platforms=android
-      - run: |
-          echo "Adding permissions..."
-          MANIFEST=android/app/src/main/AndroidManifest.xml
-          sed -i '/<application/i \ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />' $MANIFEST
       - run: flutter pub get
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
