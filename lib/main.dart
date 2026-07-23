@@ -1,16 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+
 void main(){runApp(const MyApp());}
 class MyApp extends StatelessWidget{
 const MyApp({super.key});
 @override Widget build(BuildContext c){
-return MaterialApp(debugShowCheckedModeBanner: false,
-home: Scaffold(appBar: AppBar(backgroundColor: Colors.blue,title: const Text("DATA DOSTH",style: TextStyle(color:Colors.white))),
-body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
+return MaterialApp(debugShowCheckedModeBanner: false,title: 'DATA DOSTH',
+theme: ThemeData(primarySwatch: Colors.blue),home: const LocationScreen());
+}
+}
+class LocationScreen extends StatefulWidget{
+const LocationScreen({super.key});
+@override State<LocationScreen> createState()=> _LocationScreenState();
+}
+class _LocationScreenState extends State<LocationScreen>{
+String areaName = "Location kosam button click chey";
+String fullAddress = "";
+String latlong = "";
+bool loading = false;
+
+Future<void> getLocation() async{
+setState(()=> loading=true);
+try{
+LocationPermission perm = await Geolocator.checkPermission();
+if(perm==LocationPermission.denied){
+perm = await Geolocator.requestPermission();
+}
+if(perm==LocationPermission.deniedForever || perm==LocationPermission.denied){
+setState(()=> areaName="Location permission ivvu bro!");
+setState(()=> loading=false);
+return;
+}
+Position pos = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+List<Placemark> places = await placemarkFromCoordinates(pos.latitude, pos.longitude);
+Placemark p = places[0];
+setState((){
+areaName = p.locality?? p.subLocality?? p.administrativeArea?? "Unknown Area";
+fullAddress = "${p.street}, ${p.locality}, ${p.administrativeArea}, ${p.postalCode}";
+latlong = "${pos.latitude.toStringAsFixed(6)}, ${pos.longitude.toStringAsFixed(6)}";
+loading=false;
+});
+}catch(e){
+setState(()=> areaName="Error: $e");
+setState(()=> loading=false);
+}
+}
+
+@override Widget build(BuildContext c){
+return Scaffold(
+appBar: AppBar(backgroundColor: Colors.blue,title: const Text("DATA DOSTH",style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),centerTitle: true),
+body: Padding(padding: const EdgeInsets.all(20),child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [
 const Icon(Icons.location_on,size:80,color:Colors.red),
-const Text("Rayachoti / Gajwel",style: TextStyle(fontSize:28,fontWeight: FontWeight.bold)),
+const SizedBox(height:10),
+Text(areaName,style: const TextStyle(fontSize:28,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
+const SizedBox(height:10),
+if(fullAddress.isNotEmpty) Text(fullAddress,textAlign: TextAlign.center,style: const TextStyle(fontSize:14,color:Colors.grey)),
+if(latlong.isNotEmpty)...[
+const SizedBox(height:10),
+Container(padding: const EdgeInsets.all(10),decoration: BoxDecoration(color: Colors.grey.shade200,borderRadius: BorderRadius.circular(10)),
+child: Text("📍 $latlong",style: const TextStyle(fontFamily: 'monospace'))),
+],
+const SizedBox(height:30),
+loading? const CircularProgressIndicator() :
+ElevatedButton.icon(icon: const Icon(Icons.my_location),label: const Text("GET MY AREA NAME"),onPressed: getLocation,style: ElevatedButton.styleFrom(backgroundColor: Colors.blue,foregroundColor: Colors.white,padding: const EdgeInsets.symmetric(horizontal:30,vertical:15))),
+const SizedBox(height:15),
+ElevatedButton.icon(icon: const Icon(Icons.sos),label: const Text("SOS - NEED DATA"),onPressed: (){if(areaName.isNotEmpty) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("SOS sent from $areaName - $latlong")));},style: ElevatedButton.styleFrom(backgroundColor: Colors.red,foregroundColor: Colors.white,padding: const EdgeInsets.symmetric(horizontal:40,vertical:20))),
 const SizedBox(height:20),
-ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(backgroundColor:Colors.red,padding: const EdgeInsets.symmetric(horizontal:40,vertical:20)),
-child: const Text("SOS - NEED DATA",style: TextStyle(color:Colors.white,fontSize:18))),
-]))));
+const Text("Nizamabad / Hyderabad / Rayachoti - ekkadunna auto detect",style: TextStyle(fontSize:12,color:Colors.grey)),
+])),
+);
 }
 }
