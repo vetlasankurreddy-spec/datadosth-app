@@ -17,13 +17,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Pub Get
-        run: flutter pub get
-
-      - name: Fix Old Android Project
+      - name: Fix Project Correctly (Without Deleting Your Code)
         run: |
           sed -i 's/name: datadosth-app/name: datadosth_app/' pubspec.yaml
-          flutter create . --platforms=android --project-name datadosth_app --overwrite
+          cp -r lib lib_backup
+          rm -rf android
+          flutter create . --platforms=android --project-name datadosth_app
+          rm -rf lib
+          mv lib_backup lib
           flutter pub get
 
       - name: Build APK
@@ -32,5 +33,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: datadosth-apk
+          name: datadosth-apk-real
           path: build/app/outputs/flutter-apk/app-debug.apk
