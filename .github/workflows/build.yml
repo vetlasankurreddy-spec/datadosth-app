@@ -11,9 +11,10 @@ jobs:
         with:
           flutter-version: '3.22.3'
           channel: 'stable'
-      - name: APK ni nirminchandi
+      - name: Build DATA DOSTH APK
         run: |
           flutter create --project-name datadosth_app --platforms=android. --overwrite
+          mkdir -p lib
           cat > lib/main.dart << 'ENDOFFILE'
           import 'package:flutter/material.dart';
           import 'package:geolocator/geolocator.dart';
@@ -31,9 +32,7 @@ jobs:
           }
           class _LocationScreenState extends State<LocationScreen>{
           String areaName = "Location kosam button click chey";
-          String fullAddress = "";
-          String latlong = "";
-          bool loading = false;
+          String fullAddress = "";String latlong = "";bool loading = false;
           Future<void> getLocation() async{
           setState(()=> loading=true);
           try{
@@ -67,4 +66,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: DATA-DOSTH-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk￼Enter
