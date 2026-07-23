@@ -1,5 +1,5 @@
 name: datadosth_app
-description: DATA DOSTH
+description: DATA DOSTH - Location based data sharing
 publish_to: 'none'
 version: 1.0.0+1
 environment:
@@ -8,5 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
 flutter:
   uses-material-design: true
