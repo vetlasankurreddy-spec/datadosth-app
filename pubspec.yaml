@@ -1,14 +1,12 @@
 name: datadosth_app
-description: DATA DOSTH - Location SOS for Gajwel & Rayachoti
+description: DATA DOSTH
 publish_to: 'none'
 version: 1.0.0+1
 environment:
-  sdk: '>=3.2.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.5
-  geolocator: ^13.0.1
-  geocoding: ^3.0.0
+  cupertino_icons: ^1.0.2
 flutter:
   uses-material-design: true
