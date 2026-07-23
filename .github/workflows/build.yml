@@ -13,7 +13,7 @@ jobs:
           channel: 'stable'
       - name: APK ni nirminchandi
         run: |
-          flutter create . --platforms=android
+          flutter create --project-name datadosth_app --platforms=android .
           flutter pub get
           flutter build apk --release
       - uses: actions/upload-artifact@v4
