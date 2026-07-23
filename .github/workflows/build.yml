@@ -21,10 +21,7 @@ jobs:
         run: flutter pub get
 
       - name: Fix Old Android Project
-        run: |
-          rm -rf android
-          flutter create --platforms=android .
-          flutter pub get
+        run: flutter create . --platforms=android --overwrite
 
       - name: Build APK
         run: flutter build apk --debug
