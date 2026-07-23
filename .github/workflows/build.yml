@@ -21,7 +21,10 @@ jobs:
         run: flutter pub get
 
       - name: Fix Old Android Project
-        run: flutter create . --platforms=android --overwrite
+        run: |
+          sed -i 's/name: datadosth-app/name: datadosth_app/' pubspec.yaml
+          flutter create . --platforms=android --project-name datadosth_app --overwrite
+          flutter pub get
 
       - name: Build APK
         run: flutter build apk --debug
