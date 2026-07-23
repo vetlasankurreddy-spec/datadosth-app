@@ -11,11 +11,12 @@ jobs:
         with:
           flutter-version: '3.24.5'
           channel: 'stable'
-      - name: Build APK
+      - name: APK ni nirminchandi
         run: |
+          flutter create . --platforms=android
           flutter pub get
           flutter build apk --release
       - uses: actions/upload-artifact@v4
         with:
           name: DATA-DOSTH-APK
-          path: build/app/outputs/flutter-apk/app-release.apk￼Enter
+          path: build/app/outputs/flutter-apk/app-release.apk
