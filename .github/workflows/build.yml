@@ -8,10 +8,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - run: flutter create. --platforms=android
       - run: flutter pub get
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
         with:
-          name: datadosth-apk-real
+          name: datadosth-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
