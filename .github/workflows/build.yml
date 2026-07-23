@@ -9,11 +9,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
+          flutter-version: '3.22.3'
           channel: 'stable'
       - name: APK ni nirminchandi
         run: |
-          flutter create --project-name datadosth_app --platforms=android .
+          flutter create --project-name datadosth_app --platforms=android . --overwrite
           flutter pub get
           flutter build apk --release
       - uses: actions/upload-artifact@v4
